@@ -63,6 +63,7 @@ class MainActivity : AppCompatActivity() {
         //escucharScore()
 
 
+
         
     }
     //Acertar puntuacion con seekBar
