@@ -51,23 +51,23 @@ class MainActivity : AppCompatActivity() {
         
     }
     //Acertar puntuacion con seekBar
-    private fun escucharScore() {
+    /*private fun escucharScore() {
         binding.botonPuntuaciones.setOnClickListener{
             val intent = Intent(this,AcertarValorActivity::class.java)
             startActivity(intent)
         }
-    }
+    }*/
 
 
     //PASAR LISTA CON PUNTUACIONES
-    /*private fun escucharScore() {
+    private fun escucharScore() {
         binding.botonPuntuaciones.setOnClickListener {
             stopTimer()
             val intent = Intent(this,PuntuacionesActivity::class.java)
             intent.putIntegerArrayListExtra("puntuaciones",listaPuntuaciones)
             startActivity(intent)
         }
-    }*/
+    }
 
     private fun escucharHitMe() {
         binding.botonHitMe.setOnClickListener {
@@ -102,9 +102,9 @@ class MainActivity : AppCompatActivity() {
         binding.seekBarRed.setOnSeekBarChangeListener(object: SeekBar.OnSeekBarChangeListener{
 
             override fun onProgressChanged(seekBar: SeekBar?, progress: Int, fromUser: Boolean) {
-                colorR = progress;
+                colorR = progress
                 actualizarTexto()
-                ponerColorBuscar();
+                ponerColorBuscar()
             }
 
             override fun onStartTrackingTouch(seekBar: SeekBar?) {

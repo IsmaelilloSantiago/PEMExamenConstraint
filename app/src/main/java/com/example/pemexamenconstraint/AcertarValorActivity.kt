@@ -1,5 +1,6 @@
 package com.example.pemexamenconstraint
 
+import android.content.DialogInterface
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.widget.SeekBar
@@ -38,14 +39,7 @@ class AcertarValorActivity : AppCompatActivity() {
     private fun escucharBoton() {
         binding.button.setOnClickListener {
 
-            var difValorAbsoluto = valorObjetivo - valorDado
-
-            if(difValorAbsoluto < 0){
-                difValorAbsoluto = - difValorAbsoluto
-            }
-            var dif:Double = difValorAbsoluto/255.0
-            var score = round((1.0-dif)*100)
-
+            var score = calcularPuntuacion()
 
             intentos++;
             ultPuntuacion = score
@@ -53,6 +47,7 @@ class AcertarValorActivity : AppCompatActivity() {
             if(ultPuntuacion == 100.0){
                 basicAlert(ultPuntuacion)
                 valorObjetivo = (0 until 255).random()
+                intentos = 0
                 val textobase = binding.valoraBuscar.text
                 binding.valoraBuscar.text = "Acierta este valor: " + "$valorObjetivo"
                 binding.lastScore.text = "Última puntuación: "
@@ -70,6 +65,17 @@ class AcertarValorActivity : AppCompatActivity() {
 
             //Toast.makeText(this, "$score", Toast.LENGTH_LONG).show()
         }
+    }
+
+    private fun calcularPuntuacion(): Double {
+        var difValorAbsoluto = valorObjetivo - valorDado
+
+        if(difValorAbsoluto < 0){
+            difValorAbsoluto = - difValorAbsoluto
+        }
+        var dif:Double = difValorAbsoluto/255.0
+        var score = round((1.0-dif)*100)
+        return score
     }
 
     private fun escucharSeekBar() {
@@ -92,7 +98,7 @@ class AcertarValorActivity : AppCompatActivity() {
         val builder = AlertDialog.Builder(this)
         builder.setTitle("Your Score!")
         builder.setMessage("$puntuacion")
-        //builder.setPositiveButton("OK", DialogInterface.OnClickListener(function = x))
+       // builder.setPositiveButton("OK", DialogInterface.OnClickListener(function = basicAlert(puntuacion)))
 
         builder.show()
     }
