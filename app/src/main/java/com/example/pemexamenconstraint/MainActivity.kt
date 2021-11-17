@@ -2,9 +2,11 @@ package com.example.pemexamenconstraint
 
 import android.content.Intent
 import android.graphics.Color
+import android.opengl.Visibility
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.os.CountDownTimer
+import android.preference.PreferenceManager
 import android.util.Log
 import android.view.View
 import android.widget.SeekBar
@@ -26,12 +28,24 @@ class MainActivity : AppCompatActivity() {
     private var colorRRandom: Int = 0
     private var colorGRandom: Int = 0
     private var colorBRandom: Int = 0
+    private val key = "MyKey"
+    var mayorPuntuacion : Int = 0
+
+
+
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         binding = ActivityMainBinding.inflate(layoutInflater)
         setContentView(binding.root)
         Log.e("OnCreate","Main")
+
+
+        val prefs = PreferenceManager.getDefaultSharedPreferences(this)
+        //recuperamos preferencia
+        val myPref = prefs.getInt(key,mayorPuntuacion)
+
+        binding.mayorPuntuacion?.text = "Mayor puntuación: $myPref"
 
         listaPuntuaciones = ArrayList()
 
@@ -46,7 +60,8 @@ class MainActivity : AppCompatActivity() {
         escucharAzul()
 
         //viaje a otras pantallas
-        escucharScore()
+        //escucharScore()
+
 
         
     }
@@ -63,6 +78,9 @@ class MainActivity : AppCompatActivity() {
     private fun escucharScore() {
         binding.botonPuntuaciones.setOnClickListener {
             stopTimer()
+
+
+
             val intent = Intent(this,PuntuacionesActivity::class.java)
             intent.putIntegerArrayListExtra("puntuaciones",listaPuntuaciones)
             startActivity(intent)
@@ -188,6 +206,9 @@ class MainActivity : AppCompatActivity() {
         basicAlert(score)
         //se las paso a la lista
         listaPuntuaciones.add(score.toInt())
+
+        calcularMaxPunt()
+
         Log.e("++",listaPuntuaciones.toString())
 
 
@@ -200,9 +221,34 @@ class MainActivity : AppCompatActivity() {
         startTimer()
     }
 
+    private fun calcularMaxPunt() {
+
+        for ((i,value) in listaPuntuaciones?.withIndex()!!) {
+            if(i == 0){
+                mayorPuntuacion = listaPuntuaciones!!.get(i)
+            }else if(listaPuntuaciones!!.get(i)> mayorPuntuacion){
+                mayorPuntuacion = listaPuntuaciones!!.get(i)
+            }
+        }
+
+        binding.mayorPuntuacion?.text = "Mayor puntuación: $mayorPuntuacion"
+        //Obtener preferenceManager
+        val prefs = PreferenceManager.getDefaultSharedPreferences(this)
+
+        //guardamos la preferencia
+        val editor = prefs.edit()
+        editor.putInt(key,mayorPuntuacion)
+        editor.apply()
+
+
+    }
+
     override fun onResume() {
         super.onResume()
         Log.e("OnResume","Main")
+
+
+
         ponerColorRandomObjetivo()
         startTimer()
     }

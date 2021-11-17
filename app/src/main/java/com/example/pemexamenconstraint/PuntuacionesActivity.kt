@@ -1,7 +1,9 @@
 package com.example.pemexamenconstraint
 
+import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import android.preference.PreferenceManager
 import android.util.Log
 import com.example.pemexamenconstraint.databinding.ActivityMainBinding
 import com.example.pemexamenconstraint.databinding.ActivityPuntuacionesBinding
@@ -11,6 +13,9 @@ class PuntuacionesActivity : AppCompatActivity() {
     private var listaPuntuaciones:java.util.ArrayList<Int>? = ArrayList()
     private var mayorPuntuacion : Int = 0
     private var menorPuntuacion : Int = 0
+    private val key = "MyKey"
+
+
 
 
 
@@ -35,6 +40,8 @@ class PuntuacionesActivity : AppCompatActivity() {
             }
         }
 
+
+
         for ((i,value) in listaPuntuaciones?.withIndex()!!) {
             if(i == 0){
                 menorPuntuacion = listaPuntuaciones!!.get(i)
@@ -50,5 +57,28 @@ class PuntuacionesActivity : AppCompatActivity() {
         binding.puntAlta.text = "Mayor puntuación: " + mayorPuntuacion.toString()
         binding.puntBaja.text = "Menor puntuación: " + menorPuntuacion.toString()
 
+
+
+        //Obtener preferenceManager
+        val prefs = PreferenceManager.getDefaultSharedPreferences(this)
+
+        //guardamos la preferencia
+        val editor = prefs.edit()
+        editor.putInt(key,mayorPuntuacion)
+        editor.apply()
+
+        //recuperamos preferencia
+        val myPref = prefs.getInt(key,mayorPuntuacion)
+        binding.puntAlta.text = "Mayor puntuación: $myPref"
+
+
+    }
+
+    override fun onBackPressed() {
+        super.onBackPressed()
+        val intent = Intent(this,MainActivity::class.java)
+        intent.putExtra("mayorPunt",mayorPuntuacion)
+        Log.e("mm",mayorPuntuacion.toString())
+        startActivity(intent)
     }
 }

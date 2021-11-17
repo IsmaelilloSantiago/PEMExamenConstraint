@@ -41,6 +41,17 @@
     </TextView>
 
     <TextView
+        android:id="@+id/mayorPuntuacion"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginEnd="12dp"
+        android:layout_marginRight="12dp"
+        android:text="Mayor Puntuacion: "
+        app:layout_constraintBottom_toBottomOf="@+id/botonHitMe"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/textoRGB" />
+
+    <TextView
         android:id="@+id/colorBuscar"
         android:layout_width="149dp"
         android:layout_height="212dp"
